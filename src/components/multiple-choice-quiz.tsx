@@ -174,7 +174,7 @@ const MultipleChoiceQuiz = ({ quiz }: { quiz: Quiz }) => {
           </p>
 
           {/* Informação adicional para leitores de tela */}
-          <p className="sr-only">
+          <p className="sr-only" style={{ userSelect: "none" }}>
             Questão {questionID + 1} de {quizLength}.
             Use as setas do teclado para navegar entre as opções,
             Enter ou Espaço para selecionar,
@@ -184,7 +184,7 @@ const MultipleChoiceQuiz = ({ quiz }: { quiz: Quiz }) => {
 
         {/* Fieldset para agrupar os checkboxes */}
         <fieldset className="my-3 border-t border-b">
-          <legend className="sr-only">
+          <legend className="sr-only" style={{ userSelect: "none" }}>
             Selecione uma alternativa para a questão {questionID + 1}
           </legend>
 
