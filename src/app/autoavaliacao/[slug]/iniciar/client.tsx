@@ -18,7 +18,7 @@ export default function Client({
       {quiz.type === 1 && <YNQuiz quiz={quiz} />}
       {/* quiz.type = 2, renderiza o quiz de multiplas escolhas*/}
       {quiz.type === 2 && <MultipleChoiceQuiz quiz={quiz} />}
-      {/* quiz.type = 3, renderiza o quiz de multiplas escolhas por grupo*/}
+      {/* quiz.type = 3, renderiza o quiz de multiplas escolhas, com pontuação dividida entre grupos*/}
       {quiz.type === 3 && <MultipleGroupQuiz quiz={quiz} />}
 
       {/* Botão de goBack posicionado abaixo dos forms para manter acessibilidade ao navegar com TAB - hierarquia DOM HTML */}

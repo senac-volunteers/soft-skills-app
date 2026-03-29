@@ -4,12 +4,12 @@ interface CardProps{
     icon: any,
     title: string,
     description: string,
-    url: string,
-    tabTitle?: number,
-    tabLink?: number,
-    info?: boolean,
-    duration?: number,
-    btnText?: string,
+    url: string, // Ex.: "/autoavaliacao/{slug}"
+    tabTitle?: number, // acessibilidade
+    tabLink?: number, // acessibilidade
+    info?: boolean, // Se true, habilita descrição do card, opcional
+    duration?: number, // Duração do teste em minutos, opcional
+    btnText?: string, // Texto custom do botão, opcional
 }
 
 const CardForm = ({ icon, title, description, url, tabLink, tabTitle, info, duration, btnText }: CardProps) => {
