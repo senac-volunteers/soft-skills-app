@@ -85,22 +85,22 @@
     "questions": [
       {
         "id": 1,
-        "question": "Como você agiria como líder de uma equipe na definição das atividades semanais?",
+        "question": "É segunda-feira e você precisa organizar as atividades da semana com sua equipe. O que você faria como líder?",
         "alternatives": [
           {
             "id": "k07r8o",
             "categoryValue": "autocrat",
-            "text": "Eu determinaria as tarefas de cada membro, pois acredito que assim é mais produtivo."
+            "text": "Definiria as tarefas e as distribuiria conforme as prioridades."
           },
           {
             "id": "sy9hno",
             "categoryValue": "liberal",
-            "text": "Eu deixaria a divisão de trabalho a critério de cada membro do grupo."
+            "text": "Apresentaria as atividades e deixaria a equipe escolher o que fazer."
           },
           {
             "id": "sg6vb0",
             "categoryValue": "democrat",
-            "text": "Acredito que os membros do grupo devem reunir-se e decidir o que eles deverão fazer."
+            "text": "Discutiria as atividades com a equipe antes de definir as tarefas."
           }
         ],
         "feedback": "",
@@ -108,22 +108,22 @@
       },
       {
         "id": 2,
-        "question": "Qual dessas frases você usaria se ocupasse o cargo de líder ou gerente de uma equipe?",
+        "question": "Como você se posiciona em relação às decisões na sua equipe?",
         "alternatives": [
           {
             "id": "u1ey31",
             "categoryValue": "autocrat",
-            "text": "“Os meus subordinados dependem mais de minha liderança que do próprio grupo, pois o(a) líder tem mais experiência de trabalho”."
+            "text": "Tomo as decisões e a equipe executa."
           },
           {
             "id": "hs0wlf",
             "categoryValue": "liberal",
-            "text": "“Os meus subordinados não dependem de mim, e só me consultam quando necessário”."
+            "text": "Cada membro decide como trabalhar, com pouca interferência minha."
           },
           {
             "id": "6ssy8n",
             "categoryValue": "democrat",
-            "text": "“As decisões devem ser tomadas pelos próprios membros do grupo ou equipe”."
+            "text": "Considero a opinião da equipe antes de decidir."
           }
         ],
         "feedback": "",
@@ -154,22 +154,22 @@
       },
       {
         "id": 4,
-        "question": "Sua equipe reduziu a produtividade. Ninguém se preocupa em cumprir metas. É hora de “cobrar” prazos. O que você faria como supervisor, gerente ou líder desse grupo?",
+        "question": "A produtividade da equipe caiu e os prazos não estão sendo cumpridos. Como você agiria?",
         "alternatives": [
           {
             "id": "7iqhac",
             "categoryValue": "autocrat",
-            "text": "Definiria punições para quem não cumpriu os prazos determinados."
+            "text": "Definiria metas, prazos e cobraria resultados."
           },
           {
             "id": "ma67zs",
             "categoryValue": "liberal",
-            "text": "Permitiria que a equipe definisse entre si ações que favorecessem o alcance das metas nos prazos."
+            "text": "Deixaria a equipe identificar os problemas e propor soluções."
           },
           {
             "id": "ca67ng",
             "categoryValue": "democrat",
-            "text": "Pediria à equipe sugestões de como melhorar a produtividade e a entrega de tarefas dentro do prazo."
+            "text": "Reuniria a equipe para entender a situação e definir ações em conjunto."
           }
         ],
         "feedback": "",
@@ -200,22 +200,22 @@
       },
       {
         "id": 6,
-        "question": "Como você agiria exercendo a função de líder na orientação das atividades a serem realizadas?",
+        "question": "Como você orienta as atividades da equipe?",
         "alternatives": [
           {
             "id": "vqil11",
             "categoryValue": "autocrat",
-            "text": "Coordenaria as ações de forma diretiva para que a equipe funcione adequadamente."
+            "text": "Defino objetivos, prioridades e como o trabalho deve ser feito."
           },
           {
             "id": "0szfor",
             "categoryValue": "liberal",
-            "text": "Na minha equipe, cada um faria o que acredita ser o melhor para a realização do seu trabalho."
+            "text": "Apresento os objetivos e deixo a equipe definir prioridades e como trabalhar."
           },
           {
             "id": "in0c0g",
             "categoryValue": "democrat",
-            "text": "Consultaria minha equipe para decidir como devo me orientar melhor."
+            "text": "Apresento os objetivos e defino prioridades com a equipe."
           }
         ],
         "feedback": "",
@@ -223,22 +223,22 @@
       },
       {
         "id": 7,
-        "question": "O que você faria se um dos membros de sua equipe precisasse realizar um trabalho difícil e complexo?",
+        "question": "Um membro da equipe precisa realizar uma tarefa difícil. Como você agiria?",
         "alternatives": [
           {
             "id": "gb2z7q",
             "categoryValue": "autocrat",
-            "text": "Definiria com clareza o método e o tempo necessário para a realização do trabalho."
+            "text": "Definiria como o trabalho deve ser feito e o prazo."
           },
           {
             "id": "kg3n4y",
             "categoryValue": "liberal",
-            "text": "Não interferiria, ao contrário, daria plena liberdade ao subordinado para que ele proceda como julgar melhor."
+            "text": "Daria total liberdade para a pessoa decidir como fazer."
           },
           {
             "id": "ts9u7a",
             "categoryValue": "democrat",
-            "text": "Daria uma orientação geral ao subordinado, deixando ao seu critério a definição do processo e o tempo necessários para executar a tarefa."
+            "text": "Daria orientações gerais e deixaria a pessoa definir como fazer."
           }
         ],
         "feedback": "",
@@ -246,22 +246,22 @@
       },
       {
         "id": 8,
-        "question": "Sua equipe está enfrentando dificuldades para cumprir um projeto importante dentro do prazo devido a mudanças nas tarefas. Como você, como líder, abordaria a situação?",
+        "question": "A equipe está com dificuldades para cumprir um projeto no prazo. Como você agiria?",
         "alternatives": [
           {
             "id": "bd9o2k",
             "categoryValue": "autocrat",
-            "text": "Assumiria o controle total, redistribuindo as tarefas e impondo prazos rígidos com supervisão constante."
+            "text": "Assumiria o controle, redistribuindo tarefas e prazos."
           },
           {
             "id": "wd3s6h",
             "categoryValue": "liberal",
-            "text": "Deixaria a equipe encontrar suas próprias soluções e se auto-organizar, oferecendo ajuda apenas quando solicitado."
+            "text": "Reuniria a equipe para ajustar tarefas e prazos juntos."
           },
           {
             "id": "mu4x7e",
             "categoryValue": "democrat",
-            "text": "Convocaria uma reunião para discutir os desafios e ajustar tarefas e prazos com a colaboração da equipe."
+            "text": "Deixaria a equipe se organizar, ajudando quando necessário."
           }
         ],
         "feedback": "",
@@ -269,22 +269,22 @@
       },
       {
         "id": 9,
-        "question": "Sua equipe tem uma apresentação importante para a diretoria. Como você, como líder, agiria para garantir que a apresentação seja bem-sucedida?",
+        "question": "Sua equipe precisa preparar uma apresentação importante. Como você agiria?",
         "alternatives": [
           {
             "id": "nt6b5x",
             "categoryValue": "autocrat",
-            "text": "Definiria o conteúdo e tarefas, supervisionando de perto e tomando decisões finais."
+            "text": "Definiria o que será feito e quem fará cada parte."
           },
           {
             "id": "as2c8y",
             "categoryValue": "liberal",
-            "text": "Deixaria a equipe se auto-organizar e prepararia a apresentação com liberdade, oferecendo ajuda apenas se solicitado."
+            "text": "Discutiria com a equipe e dividiriam juntos as responsabilidades."
           },
           {
             "id": "lr9m4p",
             "categoryValue": "democrat",
-            "text": "Reuniria a equipe para discutir o conteúdo e colaborar na definição de responsabilidades e prazos."
+            "text": "Deixaria a equipe decidir como organizar a apresentação."
           }
         ],
         "feedback": "",
@@ -292,22 +292,22 @@
       },
       {
         "id": 10,
-        "question": "Há conflitos na equipe devido a fofocas e boatos que estão circulando no grupo. Como você, como líder, abordaria essa situação para resolver os conflitos e melhorar a comunicação?",
+        "question": "Há conflitos na equipe por fofocas e boatos. Como você agiria?",
         "alternatives": [
           {
             "id": "qx7n5t",
             "categoryValue": "autocrat",
-            "text": "Imporia regras rígidas contra fofocas e tomaria medidas disciplinares contra os responsáveis."
+            "text": "Deixaria a equipe definir como melhorar a comunicação."
           },
           {
             "id": "de4j3h",
             "categoryValue": "liberal",
-            "text": "Incentivaria a equipe a estabelecer suas próprias normas de comunicação e resolução de conflitos, apoiando as iniciativas surgidas."
+            "text": "Reuniria a equipe para discutir o problema e definir soluções."
           },
           {
             "id": "fb8p2w",
             "categoryValue": "democrat",
-            "text": "Convocaria uma reunião para discutir abertamente os problemas de comunicação e definir estratégias para melhorar a transparência."
+            "text": "Estabeleceria regras e aplicaria medidas para evitar fofocas."
           }
         ],
         "feedback": "",
