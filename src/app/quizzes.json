@@ -136,7 +136,7 @@
           {
             "id": "unbs22",
             "categoryValue": "autocrat",
-            "text": "Com rapidez e firmeza para mudar o curso dos acontecimentos."
+            "text": "Interviria com rapidez e firmeza para mudar o curso dos acontecimentos."
           },
           {
             "id": "do5m1t",
@@ -192,7 +192,7 @@
           {
             "id": "j79dow",
             "categoryValue": "democrat",
-            "text": "“Você já tentou fazer isso de outra maneira?”"
+            "text": "“Vamos pensar juntos em alternativas para resolver isso?”"
           }
         ],
         "feedback": "",
@@ -256,12 +256,12 @@
           {
             "id": "wd3s6h",
             "categoryValue": "liberal",
-            "text": "Reuniria a equipe para ajustar tarefas e prazos juntos."
+            "text": "Deixaria a equipe se organizar, ajudando quando necessário."
           },
           {
             "id": "mu4x7e",
             "categoryValue": "democrat",
-            "text": "Deixaria a equipe se organizar, ajudando quando necessário."
+            "text": "Reuniria a equipe para ajustar tarefas e prazos juntos."
           }
         ],
         "feedback": "",
@@ -279,12 +279,12 @@
           {
             "id": "as2c8y",
             "categoryValue": "liberal",
-            "text": "Discutiria com a equipe e dividiriam juntos as responsabilidades."
+            "text": "Deixaria a equipe decidir como organizar a apresentação."
           },
           {
             "id": "lr9m4p",
             "categoryValue": "democrat",
-            "text": "Deixaria a equipe decidir como organizar a apresentação."
+            "text": "Discutiria com a equipe e dividiriam juntos as responsabilidades."
           }
         ],
         "feedback": "",
@@ -297,17 +297,17 @@
           {
             "id": "qx7n5t",
             "categoryValue": "autocrat",
-            "text": "Deixaria a equipe definir como melhorar a comunicação."
+            "text": "Estabeleceria regras e aplicaria medidas para evitar fofocas."
           },
           {
             "id": "de4j3h",
             "categoryValue": "liberal",
-            "text": "Reuniria a equipe para discutir o problema e definir soluções."
+            "text": "Deixaria a equipe definir como melhorar a comunicação."
           },
           {
             "id": "fb8p2w",
             "categoryValue": "democrat",
-            "text": "Estabeleceria regras e aplicaria medidas para evitar fofocas."
+            "text": "Reuniria a equipe para discutir o problema e definir soluções."
           }
         ],
         "feedback": "",
