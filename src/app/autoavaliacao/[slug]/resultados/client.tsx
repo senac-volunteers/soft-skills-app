@@ -228,7 +228,60 @@ export default function Client({
     getPoints();
     getLastResults();
   }, [quiz?.id, quiz?.slug]);
+  const getEQProfile = () => {
+    const scores = {
+      autoconhecimento: firstGroupPoints,
+      autocontrole: secondGroupPoints,
+      automotivacao: thirdGroupPoints,
+      empatia: fourthGroupPoints,
+      sociais: fifthGroupPoints
+    };
 
+    const highest = Object.keys(scores).reduce((a, b) => 
+      scores[a as keyof typeof scores] > scores[b as keyof typeof scores] ? a : b
+    );
+
+    const profiles: Record<string, { title: string; color: string; desc: string }> = {
+      autoconhecimento: { title: "🦉 Sábio Interior", color: "text-purple-600", desc: "Você tem uma clareza incrível sobre suas próprias emoções e limites." },
+      autocontrole: { title: "🛡️ Fortaleza Emocional", color: "text-blue-600", desc: "Você gerencia a pressão e os impulsos com maestria nas situações difíceis." },
+      automotivacao: { title: "🔥 Motor de Iniciativa", color: "text-orange-600", desc: "Seu otimismo e foco são inabaláveis diante de qualquer obstáculo." },
+      empatia: { title: "❤️ Coração Empático", color: "text-rose-600", desc: "Você compreende e acolhe as emoções alheias com extrema sensibilidade." },
+      sociais: { title: "🤝 Arquiteto de Conexões", color: "text-emerald-600", desc: "Construir relacionamentos positivos e colaborar é a sua maior virtude." }
+    };
+
+    return profiles[highest];
+  };
+// Quiz 1: Criatividade
+  const getCreativityProfile = () => {
+    const percentage = (points / quiz.questions.length) * 100;
+    if (percentage >= 80) return { title: "🚀 Mente Visionária", color: "text-purple-600", desc: "Você tem uma capacidade excepcional de gerar ideias inovadoras e pensar fora da caixa." };
+    if (percentage >= 50) return { title: "💡 Pensador Criativo", color: "text-blue-600", desc: "Você tem ótimas ideias e consegue encontrar soluções originais para os desafios do dia a dia." };
+    return { title: "🛠️ Solucionador Prático", color: "text-emerald-600", desc: "Sua abordagem é mais focada na execução prática e na aplicação de métodos eficientes." };
+  };
+
+  // Quiz 2: Liderança
+  const getLeadershipProfile = () => {
+    if (higherPercentage === 'democrat') return { title: "🌟 Integrador Estratégico", color: "text-blue-600", desc: "Você engaja o time, valoriza ideias e constrói resultados através da colaboração." };
+    if (higherPercentage === 'liberal') return { title: "🦅 Mentor de Autonomia", color: "text-emerald-600", desc: "Você confia na equipe, oferecendo liberdade para que talentos independentes brilhem." };
+    if (higherPercentage === 'autocrat') return { title: "⚙️ Executor Focado", color: "text-orange-600", desc: "Você é focado em resultados, garantindo disciplina, ritmo e direcionamento claro." };
+    return { title: "Líder em Formação", color: "text-neutral-600", desc: "Avaliando seu perfil dominante..." };
+  };
+
+  // Quiz 4: Motivação
+  const getMotivationProfile = () => {
+    if (!motivationFactors) return null;
+    const highestFactor = Object.keys(motivationFactors).reduce((a, b) => 
+      (motivationFactors[a as keyof MotivationFactors] || 0) > (motivationFactors[b as keyof MotivationFactors] || 0) ? a : b
+    );
+    const profiles: Record<string, { title: string; color: string; desc: string }> = {
+      rp: { title: "🚀 Especialista Independente", color: "text-purple-600", desc: "Você é movido pelo desenvolvimento intelectual e autonomia." },
+      hb: { title: "🧘 Mestre da Harmonia", color: "text-emerald-600", desc: "O equilíbrio entre vida pessoal e bem-estar é sua maior força." },
+      rs: { title: "🤝 Agente de Impacto", color: "text-blue-600", desc: "Colaborar e ajudar o próximo são essenciais para o seu sucesso." },
+      e:  { title: "🛡️ Guardião da Estabilidade", color: "text-amber-600", desc: "Você constrói bases sólidas e valoriza a segurança no futuro." },
+      p:  { title: "⭐ Embaixador de Prestígio", color: "text-rose-600", desc: "Status, admiração e reconhecimento são seus grandes combustíveis." }
+    };
+    return profiles[highestFactor];
+  };
   return (
     <>
       {/* <Header /> */}
@@ -248,13 +301,15 @@ export default function Client({
         <div className="flex flex-col items-start">
           {quiz.id === 1 && (
             <>
-              <h1 className="text-xl font-medium text-neutral-800">Sua pontuação</h1>
-              <p className="text-base text-neutral-600" tabIndex={3}>
-                Quanto mais alto o seu escore, maior é a sua percepção de ser uma pessoa criativa — alguém que gera ideias, busca soluções originais e aplica a criatividade no trabalho e na vida.
-              </p>
-              <p className="font-light text-blue-700 text-7xl my-4"
+           {/* --- CARD GAMIFICADO --- */}
+              <div className="bg-neutral-50 border border-neutral-200 rounded-2xl p-8 mb-10 mt-4 text-center shadow-sm" tabIndex={3}>
+                <p className="text-sm text-neutral-500 uppercase tracking-widest font-bold mb-3">Seu Nível de Criatividade</p>
+                <h2 className={`text-4xl sm:text-5xl font-extrabold ${getCreativityProfile()?.color} mb-4`}>{getCreativityProfile()?.title}</h2>
+                <p className="text-neutral-600 font-medium text-lg">{getCreativityProfile()?.desc}</p>
+              </div>
+              <p className="text-lg text-neutral-600"
                 tabIndex={4}
-                aria-label={`${points} pontos`}
+                aria-label={`Sua pontuação: ${points} pontos`}
               >
                 {points}<span className="text-neutral-600 text-4xl">/{quiz.questions.length}</span>
               </p>
@@ -263,6 +318,14 @@ export default function Client({
 
           {quiz.id === 2 && (
             <>
+            {/* --- CARD GAMIFICADO --- */}
+              {higherPercentage && (
+                <div className="bg-neutral-50 border border-neutral-200 rounded-2xl p-8 mb-10 mt-4 text-center shadow-sm w-full" tabIndex={3}>
+                  <p className="text-sm text-neutral-500 uppercase tracking-widest font-bold mb-3">Seu Estilo Dominante</p>
+                  <h2 className={`text-4xl sm:text-5xl font-extrabold ${getLeadershipProfile()?.color} mb-4`}>{getLeadershipProfile()?.title}</h2>
+                  <p className="text-neutral-600 font-medium text-lg">{getLeadershipProfile()?.desc}</p>
+                </div>
+              )}
               <h1 className="text-xl font-medium text-neutral-800"
                 tabIndex={3}
                 aria-label={`Sua pontuação: Autocrática ${autocratPercentage.toFixed(0)}% Liberal ${liberalPercentage.toFixed(0)}% Democrática ${democratPercentage.toFixed(0)}%`}
@@ -399,13 +462,25 @@ export default function Client({
           {quiz.id === 3 && (
             <>
 
-              {/* pontuação de habilidades de autoconhecimento */}
-              <h1 className="text-xl font-medium text-neutral-800">Sua pontuação</h1>
-              <div tabIndex={3} className="text-sm text-neutral-600">
-                <p>A Inteligência Emocional é a combinação de 5 habilidades: Autoconhecimento, Autocontrole, Automotivação, Empatia e Habilidade Sociais. </p><br />
-                <p>Quanto mais próximo de {quiz.questions.length}, mais desenvolvida é a habilidade da Inteligência Emocional descrita a seguir.</p>
+             {/* --- NOVA SEÇÃO DE GAMIFICAÇÃO: INTELIGÊNCIA EMOCIONAL --- */}
+              <div className="bg-neutral-50 border border-neutral-200 rounded-2xl p-8 mb-10 mt-4 text-center shadow-sm" tabIndex={3}>
+                <p className="text-sm text-neutral-500 uppercase tracking-widest font-bold mb-3">
+                  Sua Maior Força Emocional
+                </p>
+                <h2 className={`text-4xl sm:text-5xl font-extrabold ${getEQProfile()?.color} mb-4`}>
+                  {getEQProfile()?.title}
+                </h2>
+                <p className="text-neutral-600 font-medium text-lg">
+                  {getEQProfile()?.desc}
+                </p>
               </div>
-              <br />
+              {/* --------------------------------------------------------- */}
+
+              <h1 className="text-xl font-medium text-neutral-800">Sua pontuação detalhada</h1>
+              <div tabIndex={3} className="text-sm text-neutral-600 mt-2 mb-6">
+                <p>A Inteligência Emocional é a combinação de 5 habilidades: Autoconhecimento, Autocontrole, Automotivação, Empatia e Habilidades Sociais.</p>
+                <p className="mt-2">Quanto mais próximo de {quiz.questions.length}, mais desenvolvida é a habilidade.</p>
+              </div>
 
               {/* pontuação de habilidades de Autoconhecimento */}
               <p className="text-sm text-neutral-600"
@@ -497,12 +572,14 @@ export default function Client({
 
           {quiz.id === 4 && (
             <>
-              {/* pontuação de habilidades de motivação no trabalho */}
-              <h1 className="text-xl font-medium text-neutral-800">Sua pontuação</h1>
-              <p className="text-sm text-neutral-600" tabIndex={3}>
-                Quanto maior a porcentagem mais importante é este fator para você no trabalho que você realiza.
-              </p>
-              <br />
+              {/* --- CARD GAMIFICADO --- */}
+              {motivationFactors && (
+                <div className="bg-neutral-50 border border-neutral-200 rounded-2xl p-8 mb-10 mt-4 text-center shadow-sm" tabIndex={3}>
+                  <p className="text-sm text-neutral-500 uppercase tracking-widest font-bold mb-3">Seu Motor Profissional</p>
+                  <h2 className={`text-4xl sm:text-5xl font-extrabold ${getMotivationProfile()?.color} mb-4`}>{getMotivationProfile()?.title}</h2>
+                  <p className="text-neutral-600 font-medium text-lg">{getMotivationProfile()?.desc}</p>
+                </div>
+              )}
 
               {/* RP - Relações Profissionais  */}
               <h2 className="font-bold">RP - Relações Profissionais</h2>
