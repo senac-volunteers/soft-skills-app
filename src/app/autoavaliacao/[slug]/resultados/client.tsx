@@ -278,10 +278,24 @@ export default function Client({
       hb: { title: "🧘 Mestre da Harmonia", color: "text-emerald-600", desc: "O equilíbrio entre vida pessoal e bem-estar é sua maior força." },
       rs: { title: "🤝 Agente de Impacto", color: "text-blue-600", desc: "Colaborar e ajudar o próximo são essenciais para o seu sucesso." },
       e:  { title: "🛡️ Guardião da Estabilidade", color: "text-amber-600", desc: "Você constrói bases sólidas e valoriza a segurança no futuro." },
-      p:  { title: "⭐ Embaixador de Prestígio", color: "text-rose-600", desc: "Status, admiração e reconhecimento são seus grandes combustíveis." }
+      p:  { title: "⭐  EMBAIXADOR DO SUCESSO", color: "text-rose-600", desc: "Status, admiração e reconhecimento são seus grandes combustíveis." }
     };
     return profiles[highestFactor];
-  };
+    
+  };//
+  const getCompatibilityText = (percentage: number) => {
+  if (percentage >= 80) {
+    // Cobre 100% e 83%
+    return "Alta compatibilidade";
+  }
+  if (percentage >= 30) {
+    // Cobre 66% e 34% (ou 33%)
+    return "Moderada compatibilidade";
+  }
+  // Cobre 17%, 16% e 0%
+  return "Baixa compatibilidade";
+};
+  
   return (
     <>
       {/* <Header /> */}
@@ -581,7 +595,7 @@ export default function Client({
                 </div>
               )}
 
-              {/* RP - Relações Profissionais  */}
+             {/* RP - Relações Profissionais  */}
               <h2 className="font-bold">RP - Relações Profissionais</h2>
               <p className="text-sm text-neutral-600"
                 tabIndex={4}
@@ -589,11 +603,11 @@ export default function Client({
               >
                 Valorização de situações no trabalho que envolvem o desenvolvimento intelectual, a independência de pensamento e a autonomia de decisão.
               </p>
-              <p className="font-light text-blue-700 text-7xl my-4"
+              <p className="font-light text-blue-700 text-3xl my-4"
                 tabIndex={5}
-                aria-label={`${motivationFactors?.rp || 0}%`}
+                aria-label={getCompatibilityText(motivationFactors?.rp || 0)}
               >
-                {`${motivationFactors?.rp || 0}%`}
+                {getCompatibilityText(motivationFactors?.rp || 0)}
               </p>
               <br />
 
@@ -605,11 +619,11 @@ export default function Client({
               >
                 Valorização de situações no trabalho que proporcionam equilíbrio entre vida pessoal e profissional, favorecem o bem-estar físico e emocional e contribuem para a satisfação no dia a dia.
               </p>
-              <p className="font-light text-blue-700 text-7xl my-4"
+              <p className="font-light text-blue-700 text-3xl my-4"
                 tabIndex={7}
-                aria-label={`${motivationFactors?.hb || 0}%`}
+                aria-label={getCompatibilityText(motivationFactors?.hb || 0)}
               >
-                {`${motivationFactors?.hb || 0}%`}
+                {getCompatibilityText(motivationFactors?.hb || 0)}
               </p>
               <br />
 
@@ -621,11 +635,11 @@ export default function Client({
               >
                 Valorização de situações no trabalho que envolvam ajudar, colaborar, servir e contribuir com a sociedade ou os necessitados.
               </p>
-              <p className="font-light text-blue-700 text-7xl my-4"
+              <p className="font-light text-blue-700 text-3xl my-4"
                 tabIndex={9}
-                aria-label={`${motivationFactors?.rs || 0}%`}
+                aria-label={getCompatibilityText(motivationFactors?.rs || 0)}
               >
-                {`${motivationFactors?.rs || 0}%`}
+                {getCompatibilityText(motivationFactors?.rs || 0)}
               </p>
               <br />
 
@@ -637,32 +651,31 @@ export default function Client({
               >
                 Valorização de situações no trabalho que garantem segurança, estabilidade financeira e tranquilidade em relação ao futuro.
               </p>
-              <p className="font-light text-blue-700 text-7xl my-4"
+              <p className="font-light text-blue-700 text-3xl my-4"
                 tabIndex={11}
-                aria-label={`${motivationFactors?.e || 0}%`}
+                aria-label={getCompatibilityText(motivationFactors?.e || 0)}
               >
-                {`${motivationFactors?.e || 0}%`}
+                {getCompatibilityText(motivationFactors?.e || 0)}
               </p>
               <br />
 
               {/* P – Prestígio */}
-              <h2 className="font-bold">P - Prestígio</h2>
+              <h2 className="font-bold">P - Protagonista</h2>
               <p className="text-sm text-neutral-600"
                 tabIndex={12}
-                aria-label="P - Prestígio: Valorização de situações no trabalho que envolvem admiração, status, reconhecimento e respeito por parte de colegas e sociedade."
+                aria-label="P - Protagonista: Valorização de situações no trabalho que envolvem admiração, status, reconhecimento e respeito por parte de colegas e sociedade."
               >
                 Valorização de situações no trabalho que envolvem admiração, status, reconhecimento e respeito por parte de colegas e sociedade.
               </p>
-              <p className="font-light text-blue-700 text-7xl my-4"
+              <p className="font-light text-blue-700 text-3xl my-4"
                 tabIndex={13}
-                aria-label={`${motivationFactors?.p || 0}%`}
+                aria-label={getCompatibilityText(motivationFactors?.p || 0)}
               >
-                {`${motivationFactors?.p || 0}%`}
+                {getCompatibilityText(motivationFactors?.p || 0)}
               </p>
               <br />
-            </>
+              </>
           )}
-
           <Link
             href={`/autoavaliacao/` + quiz.slug + `/iniciar`}
             className="text-blue-700 w-fit my-4 mb-4 flex items-center gap-1 hover:underline focus:outline-2 focus:outline-blue-500 focus:outline-offset-2 rounded">
