@@ -34,7 +34,7 @@ export default function Client({
             <hr />
             <div className="max-w-sm space-y-4 text-neutral-800">
               <p 
-              className="whitespace-pre-wrap break-words" 
+              className="whitespace-pre-wrap wrap-break-word" 
               tabIndex={4}
               >
                 {quiz.description}

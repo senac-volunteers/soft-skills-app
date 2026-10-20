@@ -316,7 +316,7 @@ export default function Client({
           {quiz.id === 1 && (
             <>
            {/* --- CARD GAMIFICADO --- */}
-              <div className="bg-neutral-50 border border-neutral-200 rounded-2xl p-8 mb-10 mt-4 text-center shadow-sm" tabIndex={3}>
+              <div className="bg-neutral-50 border border-neutral-200 rounded-2xl p-8 mb-10 mt-4 text-center shadow-xs" tabIndex={3}>
                 <p className="text-sm text-neutral-500 uppercase tracking-widest font-bold mb-3">Seu Nível de Criatividade</p>
                 <h2 className={`text-4xl sm:text-5xl font-extrabold ${getCreativityProfile()?.color} mb-4`}>{getCreativityProfile()?.title}</h2>
                 <p className="text-neutral-600 font-medium text-lg">{getCreativityProfile()?.desc}</p>
@@ -334,7 +334,7 @@ export default function Client({
             <>
             {/* --- CARD GAMIFICADO --- */}
               {higherPercentage && (
-                <div className="bg-neutral-50 border border-neutral-200 rounded-2xl p-8 mb-10 mt-4 text-center shadow-sm w-full" tabIndex={3}>
+                <div className="bg-neutral-50 border border-neutral-200 rounded-2xl p-8 mb-10 mt-4 text-center shadow-xs w-full" tabIndex={3}>
                   <p className="text-sm text-neutral-500 uppercase tracking-widest font-bold mb-3">Seu Estilo Dominante</p>
                   <h2 className={`text-4xl sm:text-5xl font-extrabold ${getLeadershipProfile()?.color} mb-4`}>{getLeadershipProfile()?.title}</h2>
                   <p className="text-neutral-600 font-medium text-lg">{getLeadershipProfile()?.desc}</p>
@@ -477,7 +477,7 @@ export default function Client({
             <>
 
              {/* --- NOVA SEÇÃO DE GAMIFICAÇÃO: INTELIGÊNCIA EMOCIONAL --- */}
-              <div className="bg-neutral-50 border border-neutral-200 rounded-2xl p-8 mb-10 mt-4 text-center shadow-sm" tabIndex={3}>
+              <div className="bg-neutral-50 border border-neutral-200 rounded-2xl p-8 mb-10 mt-4 text-center shadow-xs" tabIndex={3}>
                 <p className="text-sm text-neutral-500 uppercase tracking-widest font-bold mb-3">
                   Sua Maior Força Emocional
                 </p>
@@ -588,7 +588,7 @@ export default function Client({
             <>
               {/* --- CARD GAMIFICADO --- */}
               {motivationFactors && (
-                <div className="bg-neutral-50 border border-neutral-200 rounded-2xl p-8 mb-10 mt-4 text-center shadow-sm" tabIndex={3}>
+                <div className="bg-neutral-50 border border-neutral-200 rounded-2xl p-8 mb-10 mt-4 text-center shadow-xs" tabIndex={3}>
                   <p className="text-sm text-neutral-500 uppercase tracking-widest font-bold mb-3">Seu Motor Profissional</p>
                   <h2 className={`text-4xl sm:text-5xl font-extrabold ${getMotivationProfile()?.color} mb-4`}>{getMotivationProfile()?.title}</h2>
                   <p className="text-neutral-600 font-medium text-lg">{getMotivationProfile()?.desc}</p>

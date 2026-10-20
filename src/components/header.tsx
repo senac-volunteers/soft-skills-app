@@ -9,7 +9,7 @@ const Header = () => {
       {/* Desktop menu */}
       <div
         className="
-        bg-white/20 backdrop-blur border m-6 py-2 pl-4 pr-3 rounded-full 
+        bg-white/20 backdrop-blur-sm border m-6 py-2 pl-4 pr-3 rounded-full 
           hidden sm:flex justify-between items-center w-full mx-auto
         ">
         <Link href={"/"}>
@@ -69,7 +69,7 @@ const Header = () => {
         </div>
         <div
           className="
-            absolute w-max rounded-md bg-blue-50 border border-blue-100 p-5 space-y-3 -translate-x-0 translate-y-0 invisible opacity-0
+            absolute w-max rounded-md bg-blue-50 border border-blue-100 p-5 space-y-3 translate-x-0 translate-y-0 invisible opacity-0
             group-hover:opacity-100 group-hover:-translate-x-2/3 group-hover:visible duration-300 group-hover:z-50
           ">
           <Link href={"/"}
@@ -107,7 +107,7 @@ const Header = () => {
 
           {/* TODO: Adicionar quando for criado o login
           <Link href={"/login"}
-            className="px-6 py-2 ml-4 !mt-8 text-center block bg-blue-500 text-white hover:bg-blue-600 rounded-full cursor-pointer">
+            className="px-6 py-2 ml-4 mt-8! text-center block bg-blue-500 text-white hover:bg-blue-600 rounded-full cursor-pointer">
             Entrar
           </Link> */}
         </div>
