@@ -1,6 +1,8 @@
 "use client";
 import { useId } from "react";
 import { cn } from "@/lib/utils";
+import BrainMascot from "./animation/brain-mascot";
+import LeaderMascot from "./animation/leader-mascot";
 
 // Ícones ilustrados e animados da identidade visual (animações em globals.css).
 // Cada um tem um movimento em repouso; com a classe "fire" no pai, faz a reação de conquista.
@@ -331,41 +333,9 @@ export function TrailEmblem({
   className?: string;
 }) {
   if (slug === "inteligencia-emocional")
-    return (
-      <svg
-        className={cn("ico", className)}
-        viewBox="0 0 64 64"
-        aria-hidden="true"
-      >
-        <path
-          d="M32 56 C14 44 6 34 6 22 A13 13 0 0 1 32 16 A13 13 0 0 1 58 22 C58 34 50 44 32 56Z"
-          fill="#FF6B6B"
-        />
-        <path
-          d="M14 22a8 8 0 0 1 8-8"
-          stroke="#fff"
-          strokeWidth="4"
-          fill="none"
-          strokeLinecap="round"
-          opacity=".6"
-        />
-        {star4(54, 10, 5, "#FFC83D")}
-      </svg>
-    );
+    return <BrainMascot className={className} />;
   if (slug === "estilos-de-lideranca")
-    return (
-      <svg
-        className={cn("ico", className)}
-        viewBox="0 0 64 64"
-        aria-hidden="true"
-      >
-        <circle cx="32" cy="32" r="26" fill="#4CC2FF" />
-        <circle cx="32" cy="32" r="19" fill="#E2F5FF" />
-        <path d="M32 14 L38 32 L32 50 L26 32Z" fill="#1E96D8" />
-        <path d="M32 14 L38 32 L26 32Z" fill="#FF6B6B" />
-        <circle cx="32" cy="32" r="3.5" fill="#fff" />
-      </svg>
-    );
+    return <LeaderMascot className={className} />;
   if (slug === "motivacao-no-trabalho")
     return <FlameIcon className={className} />;
   return (

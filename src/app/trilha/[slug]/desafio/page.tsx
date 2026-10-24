@@ -6,7 +6,7 @@ import { Volume2, VolumeX, X } from "lucide-react";
 import { ProgressBar } from "@/components/game/shell";
 import { BoltIcon, FlameIcon, MedalIcon, SoundIcon } from "@/components/game/icons";
 import { Narrator } from "@/components/game/characters";
-import { Celebration, type CelebrationProps } from "@/components/game/celebration";
+import { Celebration, type CelebrationProps } from "@/components/game/animation/celebration";
 import { computeResult } from "@/game/scoring";
 import { getTrail } from "@/game/trails";
 import { answeredCount, BADGES, useGame, type TrailProgress } from "@/game/store";

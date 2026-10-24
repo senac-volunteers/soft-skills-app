@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
-import Confetti from "./confetti";
-import { BoltIcon } from "./icons";
+import Confetti from "../confetti";
+import { BoltIcon } from "../icons";
 import { cn } from "@/lib/utils";
 
 export type CelebrationProps = {
