@@ -161,7 +161,7 @@ const MultipleChoiceQuiz = ({ quiz }: { quiz: Quiz }) => {
     <section className="w-full py-24">
       <div className="mx-3 mt-10 px-5 md:mx-auto md:w-[520px]">
         {/* Cabeçalho da questão com foco para leitores de tela */}
-        <div className="focus:outline-none">
+        <div className="focus:outline-hidden">
           <p
             ref={questionRef}
             tabIndex={0}

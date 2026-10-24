@@ -1,17 +1,10 @@
-import Header from "@/components/header";
-import JustBack from "@/components/goBackButton";
+import type { Metadata } from "next";
+import AboutContent from "./content";
 
-export const metadata = {
-  title: 'Sobre | Soft Skills Check',
-}
+export const metadata: Metadata = {
+  title: "Sobre | Soft Skills Academy",
+};
 
 export default function Page() {
-  return (
-    <>
-      <Header />
-      <div className="flex flex-col items-center justify-center h-screen">
-        <p>Em breve</p>
-      </div>
-    </>
-  )
+  return <AboutContent />;
 }

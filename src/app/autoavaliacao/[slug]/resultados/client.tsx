@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
-import { Check, TriangleAlert, Undo2 } from "lucide-react";
+import { ArrowLeft, Check, ThumbsUp, TriangleAlert, Undo2 } from "lucide-react";
 
 //imports para email
 import { sendResults } from "@/actions/results.action";
@@ -13,13 +13,16 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 //componentes
-import Header from "@/components/header";
 import { Input } from "@/components/ui/input";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from "@/components/ui/carousel"
 import { Form, FormField, FormItem, FormMessage, FormControl } from "@/components/ui/form";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ResultsEmail } from "@/components/results-email";
-import GoBackButton from "@/components/goBackButton";
+import { Shell } from "@/components/game/shell";
+import { TrailEmblem } from "@/components/game/icons";
+import { TRAIL_STYLE } from "@/components/game/trail-card";
+import { getTrail } from "@/game/trails";
+import { cn } from "@/lib/utils";
 import { LastResultEntry, LastResults } from "@/types/lastResults";
 
 interface MotivationFactors {
@@ -242,7 +245,7 @@ export default function Client({
     );
 
     const profiles: Record<string, { title: string; color: string; desc: string }> = {
-      autoconhecimento: { title: "🦉 Sábio Interior", color: "text-purple-600", desc: "Você tem uma clareza incrível sobre suas próprias emoções e limites." },
+      autoconhecimento: { title: "🦉 Sábio Interior", color: "text-blue-500", desc: "Você tem uma clareza incrível sobre suas próprias emoções e limites." },
       autocontrole: { title: "🛡️ Fortaleza Emocional", color: "text-blue-600", desc: "Você gerencia a pressão e os impulsos com maestria nas situações difíceis." },
       automotivacao: { title: "🔥 Motor de Iniciativa", color: "text-orange-600", desc: "Seu otimismo e foco são inabaláveis diante de qualquer obstáculo." },
       empatia: { title: "❤️ Coração Empático", color: "text-rose-600", desc: "Você compreende e acolhe as emoções alheias com extrema sensibilidade." },
@@ -254,7 +257,7 @@ export default function Client({
 // Quiz 1: Criatividade
   const getCreativityProfile = () => {
     const percentage = (points / quiz.questions.length) * 100;
-    if (percentage >= 80) return { title: "🚀 Mente Visionária", color: "text-purple-600", desc: "Você tem uma capacidade excepcional de gerar ideias inovadoras e pensar fora da caixa." };
+    if (percentage >= 80) return { title: "🚀 Mente Visionária", color: "text-blue-500", desc: "Você tem uma capacidade excepcional de gerar ideias inovadoras e pensar fora da caixa." };
     if (percentage >= 50) return { title: "💡 Pensador Criativo", color: "text-blue-600", desc: "Você tem ótimas ideias e consegue encontrar soluções originais para os desafios do dia a dia." };
     return { title: "🛠️ Solucionador Prático", color: "text-emerald-600", desc: "Sua abordagem é mais focada na execução prática e na aplicação de métodos eficientes." };
   };
@@ -274,7 +277,7 @@ export default function Client({
       (motivationFactors[a as keyof MotivationFactors] || 0) > (motivationFactors[b as keyof MotivationFactors] || 0) ? a : b
     );
     const profiles: Record<string, { title: string; color: string; desc: string }> = {
-      rp: { title: "🚀 Especialista Independente", color: "text-purple-600", desc: "Você é movido pelo desenvolvimento intelectual e autonomia." },
+      rp: { title: "🚀 Especialista Independente", color: "text-blue-500", desc: "Você é movido pelo desenvolvimento intelectual e autonomia." },
       hb: { title: "🧘 Mestre da Harmonia", color: "text-emerald-600", desc: "O equilíbrio entre vida pessoal e bem-estar é sua maior força." },
       rs: { title: "🤝 Agente de Impacto", color: "text-blue-600", desc: "Colaborar e ajudar o próximo são essenciais para o seu sucesso." },
       e:  { title: "🛡️ Guardião da Estabilidade", color: "text-amber-600", desc: "Você constrói bases sólidas e valoriza a segurança no futuro." },
@@ -296,396 +299,177 @@ export default function Client({
   return "Baixa compatibilidade";
 };
   
-  return (
-    <>
-      {/* <Header /> */}
-      <GoBackButton tabButton={1} redirect="/" />
+  const trail = getTrail(quiz.slug);
+  const style = TRAIL_STYLE[trail?.color ?? "sea"];
+  const total = quiz.questions.length;
 
-      <div className="mx-auto py-32 max-w-xs sm:max-w-4xl sm:px-5">
-        <div className="mb-8">
-          <h1
-            className="text-3xl font-bold text-blue-700 w-max "
-            aria-label={`${quiz.title} - Resultados obtidos`}
-            tabIndex={2}
-          >
+  const profile =
+    quiz.id === 1 ? { heading: "Seu nível de criatividade", ...getCreativityProfile() }
+    : quiz.id === 2 && higherPercentage ? { heading: "Seu estilo dominante", ...getLeadershipProfile() }
+    : quiz.id === 3 ? { heading: "Sua maior força emocional", ...getEQProfile() }
+    : quiz.id === 4 && motivationFactors ? { heading: "Seu motor profissional", ...getMotivationProfile()! }
+    : null;
+  // Os títulos começam com o emoji: separa para mostrar o emoji no selo.
+  const [profileEmoji, ...profileWords] = (profile?.title ?? "").trim().split(/\s+/);
+
+  const leadership = { autocrat: "Autocrático", liberal: "Liberal", democrat: "Democrático" } as const;
+
+  return (
+    <Shell>
+      <Link href={trail ? `/trilha/${trail.slug}/resultado` : "/"} className="mb-3 inline-flex items-center gap-1 text-sm font-extrabold text-pop hover:underline">
+        <ArrowLeft className="size-4" /> Seu perfil
+      </Link>
+
+      <header className="mb-6 flex items-center justify-between gap-4">
+        <div className="min-w-0">
+          <p className="text-xs font-black uppercase tracking-[.12em] text-pop">Relatório completo</p>
+          <h1 className="font-display text-3xl font-bold leading-tight" aria-label={`${quiz.title} - Resultados obtidos`}>
             {quiz.title}
           </h1>
-          <h2 className="text-2xl font-semibold text-neutral-400">Autoavaliação</h2>
+          <p className="font-semibold text-soft">Autoavaliação</p>
         </div>
-        <div className="flex flex-col items-start">
-          {quiz.id === 1 && (
-            <>
-           {/* --- CARD GAMIFICADO --- */}
-              <div className="bg-neutral-50 border border-neutral-200 rounded-2xl p-8 mb-10 mt-4 text-center shadow-sm" tabIndex={3}>
-                <p className="text-sm text-neutral-500 uppercase tracking-widest font-bold mb-3">Seu Nível de Criatividade</p>
-                <h2 className={`text-4xl sm:text-5xl font-extrabold ${getCreativityProfile()?.color} mb-4`}>{getCreativityProfile()?.title}</h2>
-                <p className="text-neutral-600 font-medium text-lg">{getCreativityProfile()?.desc}</p>
-              </div>
-              <p className="text-lg text-neutral-600"
-                tabIndex={4}
-                aria-label={`Sua pontuação: ${points} pontos`}
-              >
-                {points}<span className="text-neutral-600 text-4xl">/{quiz.questions.length}</span>
+        {trail && <TrailEmblem slug={trail.slug} className="size-16 shrink-0" />}
+      </header>
+
+      {profile && (
+        <section className={cn("relative overflow-hidden rounded-[28px] px-5 py-6 text-center text-night", style.card, style.shadow)}>
+          <div className="absolute -right-10 -top-10 size-40 rounded-full bg-white/40" aria-hidden="true" />
+          <p className={cn("relative text-xs font-black uppercase tracking-widest", style.strong)}>{profile.heading}</p>
+          <div className="relative mx-auto my-4 grid size-24 place-items-center rounded-full border-[6px] border-sun bg-purple-50 text-5xl shadow-[0_6px_0_var(--color-orange-700)]" aria-hidden="true">
+            {profileEmoji}
+          </div>
+          <h2 className="relative font-display text-3xl font-bold leading-tight">{profileWords.join(" ")}</h2>
+          <p className="relative mt-2 font-semibold opacity-90">{profile.desc}</p>
+        </section>
+      )}
+
+      {quiz.id === 1 && (
+        <section className="mt-8" aria-label={`Sua pontuação: ${points} de ${total}`}>
+          <h2 className="mb-4 font-display text-xl font-semibold">Sua pontuação</h2>
+          <div className="flex items-center gap-5 rounded-2xl border-2 border-rule p-5">
+            <div className="relative grid size-24 shrink-0 place-items-center rounded-full" style={{ background: `conic-gradient(var(--color-orange-500) ${(points / total) * 360}deg, var(--panel2) 0)` }}>
+              <span className="grid size-[76px] place-items-center rounded-full bg-canvas font-display text-2xl font-bold tabular-nums">
+                {points}
+                <span className="text-sm text-soft">/{total}</span>
+              </span>
+            </div>
+            <p className="font-semibold text-soft">Situações em que você se identificou com uma atitude criativa. Quanto mais perto de {total}, mais forte é sua veia criativa.</p>
+          </div>
+        </section>
+      )}
+
+      {quiz.id === 2 && (
+        <>
+          <section className="mt-8 space-y-4" aria-label={`Sua pontuação: Autocrática ${autocratPercentage.toFixed(0)}% Liberal ${liberalPercentage.toFixed(0)}% Democrática ${democratPercentage.toFixed(0)}%`}>
+            <h2 className="font-display text-xl font-semibold">Sua pontuação</h2>
+            {(
+              [
+                ["autocrat", "Autocrática", autocratPercentage],
+                ["liberal", "Liberal", liberalPercentage],
+                ["democrat", "Democrática", democratPercentage],
+              ] as const
+            ).map(([key, label, value]) => (
+              <ScoreBar key={key} label={label} value={value} hint={`${value.toFixed(0)}%`} highlight={higherPercentage === key} />
+            ))}
+          </section>
+
+          {higherPercentage && (
+            <section className="mt-8 space-y-3">
+              <h2 className="font-display text-xl font-semibold">
+                Seu perfil de liderança: <span className="text-pop">{leadership[higherPercentage as keyof typeof leadership]}</span>
+              </h2>
+              <p className="font-semibold leading-relaxed text-soft">
+                {higherPercentage === "autocrat" &&
+                  "Caracteriza-se por um controle centralizado e unilateral, onde o líder toma todas as decisões importantes e define as direções sem consulta ou colaboração com a equipe. Embora esse estilo possa ser eficaz em situações em que a rapidez na tomada de decisões é crucial ou onde a disciplina é necessária, ele também apresenta desvantagens significativas."}
+                {higherPercentage === "liberal" &&
+                  "O líder liberal permite que a equipe trabalhe de forma autônoma, sem intervenção direta, confiando que os membros experientes e competentes possam tomar suas próprias decisões e se autogerenciar. Esse estilo de liderança funciona melhor com equipes qualificadas e independentes, mas pode ser inadequado onde os membros precisam de mais orientação e apoio."}
+                {higherPercentage === "democrat" &&
+                  "O líder democrático, também conhecido como participativo, envolve o grupo nas decisões e incentiva o debate, delegando responsabilidades e aceitando opiniões divergentes. Esse estilo promove alto engajamento e qualidade nos resultados, mas pode tornar a tomada de decisões e a execução das tarefas mais lentas devido à necessidade de considerar todas as opiniões."}
               </p>
-            </>
-          )}
-
-          {quiz.id === 2 && (
-            <>
-            {/* --- CARD GAMIFICADO --- */}
-              {higherPercentage && (
-                <div className="bg-neutral-50 border border-neutral-200 rounded-2xl p-8 mb-10 mt-4 text-center shadow-sm w-full" tabIndex={3}>
-                  <p className="text-sm text-neutral-500 uppercase tracking-widest font-bold mb-3">Seu Estilo Dominante</p>
-                  <h2 className={`text-4xl sm:text-5xl font-extrabold ${getLeadershipProfile()?.color} mb-4`}>{getLeadershipProfile()?.title}</h2>
-                  <p className="text-neutral-600 font-medium text-lg">{getLeadershipProfile()?.desc}</p>
-                </div>
-              )}
-              <h1 className="text-xl font-medium text-neutral-800"
-                tabIndex={3}
-                aria-label={`Sua pontuação: Autocrática ${autocratPercentage.toFixed(0)}% Liberal ${liberalPercentage.toFixed(0)}% Democrática ${democratPercentage.toFixed(0)}%`}
-              >
-                Sua pontuação
-              </h1>
-              <div className="flex flex-col sm:flex-row justify-between w-full mt-4">
-                <div className="flex-1">
-                  <p className="text-neutral-600 text-lg">Autocrática</p>
-                  <p className="font-light text-blue-700 text-5xl my-2 mb-5">
-                    {autocratPercentage.toFixed(0)}%
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div className="rounded-2xl bg-mint-100 p-4 text-night">
+                  <p className="mb-1 flex items-center gap-2 font-display font-semibold text-mint-700">
+                    <ThumbsUp className="size-4" /> Pontos fortes
                   </p>
-
-                  <p className="text-neutral-600 text-lg">Liberal</p>
-                  <p className="font-light text-blue-700 text-5xl my-2 mb-5">
-                    {liberalPercentage.toFixed(0)}%
-                  </p>
-
-                  <p className="text-neutral-600 text-lg">Democrática</p>
-                  <p className="font-light text-blue-700 text-5xl my-2 mb-5">
-                    {democratPercentage.toFixed(0)}%
+                  <p className="text-sm font-semibold">
+                    {higherPercentage === "autocrat" && "O líder autocrático foca nas atividades, conseguindo manter a equipe concentrada nas tarefas e nos objetivos, gerando alta produtividade."}
+                    {higherPercentage === "liberal" && "Estimula a autonomia, criatividade e desenvolvimento de habilidades, favorecendo profissionais qualificados."}
+                    {higherPercentage === "democrat" && "Foco nas pessoas e alto engajamento, resultando em produção de alta qualidade."}
                   </p>
                 </div>
-
-                <div className="flex-1">
-                  <p className="text-neutral-600 text-lg"
-                    tabIndex={4}
-                    aria-label="Seu perfil de liderança:"
-                    aria-describedby={`${higherPercentage == 'autocrat' ? "Autocrático" : higherPercentage == 'liberal' ? "Liberal" : "Democrático"}`}
-                  >
-                    Seu perfil de liderança
+                <div className="rounded-2xl bg-coral-100 p-4 text-night">
+                  <p className="mb-1 flex items-center gap-2 font-display font-semibold text-coral-700">
+                    <TriangleAlert className="size-4" /> Pontos de atenção
                   </p>
-                  <p className="font-light text-blue-700 text-5xl my-2 mb-5">
-                    {higherPercentage === 'autocrat' && <>Autocrático</>}
-                    {higherPercentage === 'liberal' && <>Liberal</>}
-                    {higherPercentage === 'democrat' && <>Democrático</>}
-                  </p>
-
-                  <p className="my-4">
-                    {higherPercentage === 'autocrat' && (
-                      <p tabIndex={5}>
-                        Caracteriza-se por um controle centralizado e unilateral, onde
-                        o líder toma todas as decisões importantes e define as direções
-                        sem consulta ou colaboração com a equipe. Embora esse estilo
-                        possa ser eficaz em situações em que a rapidez na tomada de
-                        decisões é crucial ou onde a disciplina é necessária, ele também
-                        apresenta desvantagens significativas.
-                      </p>
-                    )}
-
-                    {higherPercentage === 'liberal' && (
-                      <p tabIndex={5}>
-                        O líder liberal permite que a equipe trabalhe de forma autônoma,
-                        sem intervenção direta, confiando que os membros experientes e
-                        competentes possam tomar suas próprias decisões e se autogerenciar.
-                        Esse estilo de liderança funciona melhor com equipes qualificadas
-                        e independentes, mas pode ser inadequado onde os membros precisam
-                        de mais orientação e apoio.
-                      </p>
-                    )}
-
-                    {higherPercentage === 'democrat' && (
-                      <p tabIndex={5}>
-                        O líder democrático, também conhecido como participativo, envolve
-                        o grupo nas decisões e incentiva o debate, delegando responsabilidades
-                        e aceitando opiniões divergentes. Esse estilo promove alto engajamento
-                        e qualidade nos resultados, mas pode tornar a tomada de decisões
-                        e a execução das tarefas mais lentas devido à necessidade de considerar
-                        todas as opiniões.
-                      </p>
-                    )}
-                  </p>
-
-                  <p className="font-semibold" tabIndex={6}>
-                    Pontos fortes:
-                  </p>
-                  <p>
-                    {higherPercentage === 'autocrat' && (
-                      <p tabIndex={7}>
-                        O líder autocrático apresenta foca nas atividades, conseguindo
-                        manter a equipe concentrada nas tarefas e nos objetivos,
-                        gerando alta produtividade.
-                      </p>
-                    )}
-
-                    {higherPercentage === 'liberal' && (
-                      <p tabIndex={7}>
-                        Estimula a autonomia, criatividade e desenvolvimento de habilidades,
-                        favorecendo profissionais qualificados.
-                      </p>
-                    )}
-
-                    {higherPercentage === 'democrat' && (
-                      <p tabIndex={7}>
-                        Foco nas pessoas e alto engajamento, resultando em produção de
-                        alta qualidade.
-                      </p>
-                    )}
-                  </p>
-
-                  <p className="font-semibold mt-4" tabIndex={8}>
-                    Pontos fracos:
-                  </p>
-                  <p>
-                    {higherPercentage === 'autocrat' && (
-                      <p tabIndex={9}>
-                        A falta de participação nas decisões pode gerar insatisfação entre os
-                        membros da equipe, levando a um ambiente de trabalho pouco motivador
-                        e possivelmente até à resistência passiva. Embora a produtividade possa
-                        ser alta, a qualidade dos resultados pode ser comprometida pela falta
-                        de autonomia da equipe.
-                      </p>
-                    )}
-
-                    {higherPercentage === 'liberal' && (
-                      <p tabIndex={9}>
-                        Pode gerar sensação de abandono e permitir que erros passem despercebidos
-                        devido à falta de supervisão.
-                      </p>
-                    )}
-
-                    {higherPercentage === 'democrat' && (
-                      <p tabIndex={9}>
-                        Pode causar lentidão nas atividades devido à necessidade de discussão
-                        e consideração de todas as ideias.
-                      </p>
-                    )}
+                  <p className="text-sm font-semibold">
+                    {higherPercentage === "autocrat" &&
+                      "A falta de participação nas decisões pode gerar insatisfação entre os membros da equipe, levando a um ambiente de trabalho pouco motivador e possivelmente até à resistência passiva. Embora a produtividade possa ser alta, a qualidade dos resultados pode ser comprometida pela falta de autonomia da equipe."}
+                    {higherPercentage === "liberal" && "Pode gerar sensação de abandono e permitir que erros passem despercebidos devido à falta de supervisão."}
+                    {higherPercentage === "democrat" && "Pode causar lentidão nas atividades devido à necessidade de discussão e consideração de todas as ideias."}
                   </p>
                 </div>
               </div>
-            </>
+            </section>
           )}
+        </>
+      )}
 
-          {quiz.id === 3 && (
-            <>
+      {quiz.id === 3 && (
+        <section className="mt-8">
+          <h2 className="font-display text-xl font-semibold">Sua pontuação detalhada</h2>
+          <p className="mb-4 mt-1 text-sm font-semibold text-soft">
+            A Inteligência Emocional é a combinação de 5 habilidades. Quanto mais próximo de {total}, mais desenvolvida é a habilidade.
+          </p>
+          <ul className="space-y-3">
+            {[
+              ["Autoconhecimento", "Capacidade de reconhecer emoções, limites e qualidades pessoais com clareza.", firstGroupPoints],
+              ["Autocontrole", "Capacidade de gerenciar impulsos, emoções e reações em situações desafiadoras.", secondGroupPoints],
+              ["Automotivação", "Capacidade de manter foco, iniciativa e otimismo diante de obstáculos.", thirdGroupPoints],
+              ["Empatia", "Capacidade de compreender emoções alheias com sensibilidade e respeito.", fourthGroupPoints],
+              ["Habilidades sociais", "Capacidade de construir relacionamentos positivos com comunicação e colaboração.", fifthGroupPoints],
+            ].map(([label, desc, value]) => (
+              <li key={label} className="rounded-2xl border-2 border-rule p-4" aria-label={`${label}: ${value} de ${total} pontos. ${desc}`}>
+                <ScoreBar label={String(label)} value={(Number(value) / total) * 100} hint={`${value}/${total}`} />
+                <p className="mt-2 text-sm font-semibold text-soft">{desc}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
-             {/* --- NOVA SEÇÃO DE GAMIFICAÇÃO: INTELIGÊNCIA EMOCIONAL --- */}
-              <div className="bg-neutral-50 border border-neutral-200 rounded-2xl p-8 mb-10 mt-4 text-center shadow-sm" tabIndex={3}>
-                <p className="text-sm text-neutral-500 uppercase tracking-widest font-bold mb-3">
-                  Sua Maior Força Emocional
-                </p>
-                <h2 className={`text-4xl sm:text-5xl font-extrabold ${getEQProfile()?.color} mb-4`}>
-                  {getEQProfile()?.title}
-                </h2>
-                <p className="text-neutral-600 font-medium text-lg">
-                  {getEQProfile()?.desc}
-                </p>
-              </div>
-              {/* --------------------------------------------------------- */}
+      {quiz.id === 4 && (
+        <section className="mt-8">
+          <h2 className="mb-4 font-display text-xl font-semibold">Seus fatores de motivação</h2>
+          <ul className="space-y-3">
+            {(
+              [
+                ["rp", "RP · Realização profissional", "Valorização de situações no trabalho que envolvem o desenvolvimento intelectual, a independência de pensamento e a autonomia de decisão."],
+                ["hb", "HB · Harmonia e bem-estar pessoal", "Valorização de situações no trabalho que proporcionam equilíbrio entre vida pessoal e profissional, favorecem o bem-estar físico e emocional e contribuem para a satisfação no dia a dia."],
+                ["rs", "RS · Relações sociais", "Valorização de situações no trabalho que envolvam ajudar, colaborar, servir e contribuir com a sociedade ou os necessitados."],
+                ["e", "E · Estabilidade", "Valorização de situações no trabalho que garantem segurança, estabilidade financeira e tranquilidade em relação ao futuro."],
+                ["p", "P · Protagonista", "Valorização de situações no trabalho que envolvem admiração, status, reconhecimento e respeito por parte de colegas e sociedade."],
+              ] as const
+            ).map(([key, label, desc]) => {
+              const value = motivationFactors?.[key] || 0;
+              return (
+                <li key={key} className="rounded-2xl border-2 border-rule p-4" aria-label={`${label}: ${getCompatibilityText(value)}. ${desc}`}>
+                  <ScoreBar label={label} value={Math.min(100, value)} hint={getCompatibilityText(value)} />
+                  <p className="mt-2 text-sm font-semibold text-soft">{desc}</p>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      )}
 
-              <h1 className="text-xl font-medium text-neutral-800">Sua pontuação detalhada</h1>
-              <div tabIndex={3} className="text-sm text-neutral-600 mt-2 mb-6">
-                <p>A Inteligência Emocional é a combinação de 5 habilidades: Autoconhecimento, Autocontrole, Automotivação, Empatia e Habilidades Sociais.</p>
-                <p className="mt-2">Quanto mais próximo de {quiz.questions.length}, mais desenvolvida é a habilidade.</p>
-              </div>
-
-              {/* pontuação de habilidades de Autoconhecimento */}
-              <p className="text-sm text-neutral-600"
-                tabIndex={4}
-                aria-label="Habilidades de Autoconhecimento: Capacidade de reconhecer emoções, limites e qualidades pessoais com clareza."
-              >
-                <span className="font-bold text-black">Habilidades de Autoconhecimento: </span>
-                Capacidade de reconhecer emoções, limites e qualidades pessoais com clareza.
-              </p>
-              <p className="font-light text-blue-700 text-7xl my-4"
-                tabIndex={5}
-                aria-label={`${firstGroupPoints} pontos`}
-              >
-                {firstGroupPoints}
-              </p>
-              <p className="text-neutral-600 text-lg">/ {quiz.questions.length}</p>
-              <br />
-
-              {/* pontuação de habilidades de autocontrole */}
-              <p className="text-sm text-neutral-600"
-                tabIndex={6}
-                aria-label="Habilidades de Autocontrole: Capacidadede gerenciar impulsos, emoções e reações em situações desafiadoras."
-              >
-                <span className="font-bold text-black">Habilidades de Autocontrole: </span>
-                Capacidadede gerenciar impulsos, emoções e reações em situações desafiadoras.
-              </p>
-              <p className="font-light text-blue-700 text-7xl my-4"
-                tabIndex={7}
-                aria-label={`${secondGroupPoints} pontos`}
-              >
-                {secondGroupPoints}
-              </p>
-              <p className="text-neutral-600 text-lg">/ {quiz.questions.length}</p>
-              <br />
-
-              {/* pontuação de habilidades de automotivação */}
-              <p className="text-sm text-neutral-600"
-                tabIndex={8}
-                aria-label="Habilidades de Automotivação: Capacidade de manter foco, iniciativa e otimismo diante de obstáculos."
-              >
-                <span className="font-bold text-black">Habilidades de Automotivação: </span>
-                Capacidade de manter foco, iniciativa e otimismo diante de obstáculos.
-              </p>
-              <p className="font-light text-blue-700 text-7xl my-4"
-                tabIndex={9}
-                aria-label={`${thirdGroupPoints} pontos`}
-              >
-                {thirdGroupPoints}
-              </p>
-              <p className="text-neutral-600 text-lg">/ {quiz.questions.length}</p>
-              <br />
-
-              {/* pontuação de habilidades de empatia */}
-              <p className="text-sm text-neutral-600"
-                tabIndex={10}
-                aria-label="Habilidades de Empatia: Capacidade de compreender emoções alheias com sensibilidade e respeito."
-              >
-                <span className="font-bold text-black">Habilidades de Empatia: </span>
-                Capacidade de compreender emoções alheias com sensibilidade e respeito.
-              </p>
-              <p className="font-light text-blue-700 text-7xl my-4"
-                tabIndex={11}
-                aria-label={`${fourthGroupPoints} pontos`}
-              >
-                {fourthGroupPoints}
-              </p>
-              <p className="text-neutral-600 text-lg">/ {quiz.questions.length}</p>
-              <br />
-
-              {/* pontuação de habilidades sociais */}
-              <p className="text-sm text-neutral-600"
-                tabIndex={12}
-                aria-label="Habilidades Sociais: Capacidade de contruir relacionamentos positivos com comunicação e colaboração."
-              >
-                <span className="font-bold text-black">Habilidades Sociais: </span>
-                Capacidade de contruir relacionamentos positivos com comunicação e colaboração.
-              </p>
-              <p className="font-light text-blue-700 text-7xl my-4"
-                tabIndex={13}
-                aria-label={`${fifthGroupPoints} pontos`}
-              >
-                {fifthGroupPoints}
-              </p>
-              <p className="text-neutral-600 text-lg">/ {quiz.questions.length}</p>
-              <br />
-
-            </>
-          )}
-
-          {quiz.id === 4 && (
-            <>
-              {/* --- CARD GAMIFICADO --- */}
-              {motivationFactors && (
-                <div className="bg-neutral-50 border border-neutral-200 rounded-2xl p-8 mb-10 mt-4 text-center shadow-sm" tabIndex={3}>
-                  <p className="text-sm text-neutral-500 uppercase tracking-widest font-bold mb-3">Seu Motor Profissional</p>
-                  <h2 className={`text-4xl sm:text-5xl font-extrabold ${getMotivationProfile()?.color} mb-4`}>{getMotivationProfile()?.title}</h2>
-                  <p className="text-neutral-600 font-medium text-lg">{getMotivationProfile()?.desc}</p>
-                </div>
-              )}
-
-             {/* RP - Relações Profissionais  */}
-              <h2 className="font-bold">RP - Relações Profissionais</h2>
-              <p className="text-sm text-neutral-600"
-                tabIndex={4}
-                aria-label="RP - Relações Profissionais: Valorização de situações no trabalho que envolvem o desenvolvimento intelectual, a independência de pensamento e a autonomia de decisão."
-              >
-                Valorização de situações no trabalho que envolvem o desenvolvimento intelectual, a independência de pensamento e a autonomia de decisão.
-              </p>
-              <p className="font-light text-blue-700 text-3xl my-4"
-                tabIndex={5}
-                aria-label={getCompatibilityText(motivationFactors?.rp || 0)}
-              >
-                {getCompatibilityText(motivationFactors?.rp || 0)}
-              </p>
-              <br />
-
-              {/* HB – Harmonia e bem-estar pessoal */}
-              <h2 className="font-bold">HB - Harmonia e bem-estar pessoal</h2>
-              <p className="text-sm text-neutral-600"
-                tabIndex={6}
-                aria-label="HB - Harmonia e bem-estar pessoal: Valorização de situações no trabalho que proporcionam equilíbrio entre vida pessoal e profissional, favorecem o bem-estar físico e emocional e contribuem para a satisfação no dia a dia."
-              >
-                Valorização de situações no trabalho que proporcionam equilíbrio entre vida pessoal e profissional, favorecem o bem-estar físico e emocional e contribuem para a satisfação no dia a dia.
-              </p>
-              <p className="font-light text-blue-700 text-3xl my-4"
-                tabIndex={7}
-                aria-label={getCompatibilityText(motivationFactors?.hb || 0)}
-              >
-                {getCompatibilityText(motivationFactors?.hb || 0)}
-              </p>
-              <br />
-
-              {/* RS – Relações sociais */}
-              <h2 className="font-bold">RS – Relações sociais</h2>
-              <p className="text-sm text-neutral-600"
-                tabIndex={8}
-                aria-label="RS – Relações sociais: Valorização de situações no trabalho que envolvam ajudar, colaborar, servir e contribuir com a sociedade ou os necessitados."
-              >
-                Valorização de situações no trabalho que envolvam ajudar, colaborar, servir e contribuir com a sociedade ou os necessitados.
-              </p>
-              <p className="font-light text-blue-700 text-3xl my-4"
-                tabIndex={9}
-                aria-label={getCompatibilityText(motivationFactors?.rs || 0)}
-              >
-                {getCompatibilityText(motivationFactors?.rs || 0)}
-              </p>
-              <br />
-
-              {/* E - Estabilidade */}
-              <h2 className="font-bold">E - Estabilidade</h2>
-              <p className="text-sm text-neutral-600"
-                tabIndex={10}
-                aria-label="E - Estabilidade: Valorização de situações no trabalho que garantem segurança, estabilidade financeira e tranquilidade em relação ao futuro."
-              >
-                Valorização de situações no trabalho que garantem segurança, estabilidade financeira e tranquilidade em relação ao futuro.
-              </p>
-              <p className="font-light text-blue-700 text-3xl my-4"
-                tabIndex={11}
-                aria-label={getCompatibilityText(motivationFactors?.e || 0)}
-              >
-                {getCompatibilityText(motivationFactors?.e || 0)}
-              </p>
-              <br />
-
-              {/* P – Prestígio */}
-              <h2 className="font-bold">P - Protagonista</h2>
-              <p className="text-sm text-neutral-600"
-                tabIndex={12}
-                aria-label="P - Protagonista: Valorização de situações no trabalho que envolvem admiração, status, reconhecimento e respeito por parte de colegas e sociedade."
-              >
-                Valorização de situações no trabalho que envolvem admiração, status, reconhecimento e respeito por parte de colegas e sociedade.
-              </p>
-              <p className="font-light text-blue-700 text-3xl my-4"
-                tabIndex={13}
-                aria-label={getCompatibilityText(motivationFactors?.p || 0)}
-              >
-                {getCompatibilityText(motivationFactors?.p || 0)}
-              </p>
-              <br />
-              </>
-          )}
-          <Link
-            href={`/autoavaliacao/` + quiz.slug + `/iniciar`}
-            className="text-blue-700 w-fit my-4 mb-4 flex items-center gap-1 hover:underline focus:outline-2 focus:outline-blue-500 focus:outline-offset-2 rounded">
-            <Undo2 className="size-4" />
-            Refazer teste
-          </Link>
-
-          <hr className="my-4 w-full" />
-
-        </div>
+      <div className="mt-10 grid gap-3 sm:grid-cols-2">
+        <Link href={trail ? `/trilha/${trail.slug}` : `/autoavaliacao/${quiz.slug}/iniciar`} className="btn-3d ghost">
+          <Undo2 className="size-5" /> Refazer trilha
+        </Link>
+        <Link href="/" className="btn-3d">
+          Outras trilhas
+        </Link>
+      </div>
 
         {/*
           Pra entender como funciona o form do shadcn
@@ -737,7 +521,21 @@ export default function Client({
           </form>
         </Form>
         */}
-      </div >
-    </>
+    </Shell>
+  );
+}
+
+/** Barra de pontuação no estilo das trilhas; a mais alta fica destacada. */
+function ScoreBar({ label, value, hint, highlight }: { label: string; value: number; hint: string; highlight?: boolean }) {
+  return (
+    <div>
+      <div className="mb-1 flex items-baseline justify-between gap-3 text-sm font-extrabold">
+        <span className={cn(highlight && "text-pop")}>{label}</span>
+        <span className="whitespace-nowrap text-pop tabular-nums">{hint}</span>
+      </div>
+      <div className="h-4 overflow-hidden rounded-full bg-panel2">
+        <div className={cn("h-full rounded-full transition-[width] duration-1000 ease-out", highlight === false ? "bg-brand/50" : "bg-brand")} style={{ width: `${Math.max(4, value)}%` }} />
+      </div>
+    </div>
   );
 }

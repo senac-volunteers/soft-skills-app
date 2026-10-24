@@ -112,7 +112,7 @@ const YNQuiz = ({ quiz }: { quiz: Quiz }) => {
           <Button
             className={
               selectedQuestions[questionID] === 2
-                ? "!bg-blue-700 !text-white"
+                ? "bg-blue-700! text-white!"
                 : " "
             }
             title="Sim"
@@ -121,7 +121,7 @@ const YNQuiz = ({ quiz }: { quiz: Quiz }) => {
           <Button
             className={
               selectedQuestions[questionID] === 1
-                ? "!bg-blue-700 !text-white"
+                ? "bg-blue-700! text-white!"
                 : " "
             }
             title="Não"

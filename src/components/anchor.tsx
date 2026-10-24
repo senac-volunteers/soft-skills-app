@@ -7,7 +7,7 @@ interface Props {
 const Anchor = (props: Props) => {
   return (
     <a href={props.link}
-      className={`bg-violet-500 hover:bg-violet-600 text-white font-semibold py-2.5 px-7 rounded-xl ${props.className}`}>
+      className={`bg-blue-500 hover:bg-blue-600 text-purple-50 font-semibold py-2.5 px-7 rounded-xl ${props.className}`}>
       <span>{props.title}</span>
     </a>
   )
