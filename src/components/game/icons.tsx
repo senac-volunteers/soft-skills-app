@@ -3,6 +3,8 @@ import { useId } from "react";
 import { cn } from "@/lib/utils";
 import BrainMascot from "./animation/brain-mascot";
 import LeaderMascot from "./animation/leader-mascot";
+import MountainClimberMascot from "./animation/motivation-mascot";
+import LightbulbMascot from "./animation/lightbulb-mascot";
 
 // Ícones ilustrados e animados da identidade visual (animações em globals.css).
 // Cada um tem um movimento em repouso; com a classe "fire" no pai, faz a reação de conquista.
@@ -337,28 +339,6 @@ export function TrailEmblem({
   if (slug === "estilos-de-lideranca")
     return <LeaderMascot className={className} />;
   if (slug === "motivacao-no-trabalho")
-    return <FlameIcon className={className} />;
-  return (
-    <svg
-      className={cn("ico", className)}
-      viewBox="0 0 64 64"
-      aria-hidden="true"
-    >
-      <path
-        d="M32 6a18 18 0 0 0-10 33v7h20v-7A18 18 0 0 0 32 6z"
-        fill="#FFC83D"
-      />
-      <rect x="22" y="47" width="20" height="5" rx="2.5" fill="#1FA578" />
-      <rect x="25" y="54" width="14" height="5" rx="2.5" fill="#34D399" />
-      <path
-        d="M24 22a9 9 0 0 1 8-8"
-        stroke="#fff"
-        strokeWidth="4"
-        fill="none"
-        strokeLinecap="round"
-        opacity=".7"
-      />
-      {star4(54, 12, 5, "#34D399", "t2")}
-    </svg>
-  );
+    return <MountainClimberMascot className={className} />;
+  return <LightbulbMascot className={className} />;
 }
