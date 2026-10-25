@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import Confetti from "../confetti";
 import { BoltIcon } from "../icons";
 import { cn } from "@/lib/utils";
@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 export type CelebrationProps = {
   /** "trail" mostra o emoji do perfil; "level" mostra o número do nível novo. */
   kind: "trail" | "level";
-  emoji?: string;
+  emoji?: ReactNode;
   level?: number;
   eyebrow: string;
   title: string;
@@ -59,7 +59,7 @@ export function Celebration({ kind, emoji, level, eyebrow, title, subtitle, xp, 
           {/* A insígnia: cai girando, quica e ganha um brilho que atravessa */}
           <div className="relative grid size-40 animate-[cel-drop_1.05s_cubic-bezier(.3,.7,.4,1)_both] place-items-center overflow-hidden rounded-full border-8 border-sun bg-purple-50 shadow-[0_10px_0_var(--color-orange-700)]">
             {kind === "trail" ? (
-              <span className="text-7xl" aria-hidden="true">
+              <span className="grid size-full place-items-center p-2" aria-hidden="true">
                 {emoji}
               </span>
             ) : (

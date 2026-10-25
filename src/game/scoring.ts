@@ -1,4 +1,17 @@
+import { createElement, type ComponentType, type ReactNode } from "react";
+import AutonomyMentorMascot from "@/components/game/animation/autonomy-mentor-mascot";
+import BrainMascot from "@/components/game/animation/brain-mascot";
+import FocusedExecutorMascot from "@/components/game/animation/focused-executor-mascot";
+import IndependentSpecialistMascot from "@/components/game/animation/independent-specialist-mascot";
+import LightbulbMascot from "@/components/game/animation/lightbulb-mascot";
+import PracticalSolverMascot from "@/components/game/animation/practical-mascot";
+import StrategicIntegratorMascot from "@/components/game/animation/strategic-integrator-mascot";
+import EnergizedBrainMascot from "@/components/game/animation/visionary-mind-mascot";
 import { AnswerValue, Trail } from "./trails";
+
+const MASCOT_CLASS = "size-full [&_svg]:size-full";
+const mascot = (Component: ComponentType<{ className?: string }>) =>
+  createElement(Component, { className: MASCOT_CLASS });
 
 export interface ResultBar {
   label: string;
@@ -7,7 +20,7 @@ export interface ResultBar {
 }
 
 export interface TrailResult {
-  emoji: string;
+  emoji: ReactNode;
   title: string;
   description: string;
   heading: string;
@@ -56,10 +69,10 @@ export function computeResult(trail: Trail, answers: AnswerValue[]): TrailResult
       const pct = (points / trail.questions.length) * 100;
       const profile =
         pct >= 80
-          ? { emoji: "🚀", title: "Mente Visionária", description: "Você tem uma capacidade excepcional de gerar ideias inovadoras e pensar fora da caixa." }
+          ? { emoji: mascot(EnergizedBrainMascot), title: "Mente Visionária", description: "Você tem uma capacidade excepcional de gerar ideias inovadoras e pensar fora da caixa." }
           : pct >= 50
-            ? { emoji: "💡", title: "Pensador Criativo", description: "Você tem ótimas ideias e encontra soluções originais para os desafios do dia a dia." }
-            : { emoji: "🛠️", title: "Solucionador Prático", description: "Sua abordagem é focada na execução prática e na aplicação de métodos eficientes." };
+            ? { emoji: mascot(LightbulbMascot), title: "Pensador Criativo", description: "Você tem ótimas ideias e encontra soluções originais para os desafios do dia a dia." }
+            : { emoji: mascot(PracticalSolverMascot), title: "Solucionador Prático", description: "Sua abordagem é focada na execução prática e na aplicação de métodos eficientes." };
       return {
         ...profile,
         heading: "Seu nível de criatividade",
@@ -72,9 +85,9 @@ export function computeResult(trail: Trail, answers: AnswerValue[]): TrailResult
       const total = trail.questions.length;
       const top = maxKey(counts as Record<"autocrat" | "liberal" | "democrat", number>);
       const profiles = {
-        democrat: { emoji: "🌟", title: "Integrador Estratégico", description: "Você engaja o time, valoriza ideias e constrói resultados com colaboração." },
-        liberal: { emoji: "🦅", title: "Mentor de Autonomia", description: "Você confia na equipe e oferece liberdade para que talentos independentes brilhem." },
-        autocrat: { emoji: "⚙️", title: "Executor Focado", description: "Você é focado em resultados, garantindo disciplina, ritmo e direção clara." },
+        democrat: { emoji: mascot(StrategicIntegratorMascot), title: "Integrador Estratégico", description: "Você engaja o time, valoriza ideias e constrói resultados com colaboração." },
+        liberal: { emoji: mascot(AutonomyMentorMascot), title: "Mentor de Autonomia", description: "Você confia na equipe e oferece liberdade para que talentos independentes brilhem." },
+        autocrat: { emoji: mascot(FocusedExecutorMascot), title: "Executor Focado", description: "Você é focado em resultados, garantindo disciplina, ritmo e direção clara." },
       };
       return {
         ...profiles[top],
@@ -92,11 +105,11 @@ export function computeResult(trail: Trail, answers: AnswerValue[]): TrailResult
       const factors = { RS: sums.RS ?? 0, RP: sums.RP ?? 0, HB: sums.HB ?? 0, E: sums.E ?? 0, P: sums.P ?? 0 };
       const top = maxKey(factors);
       const profiles = {
-        RP: { emoji: "🚀", title: "Especialista Independente", description: "Você é movido pelo desenvolvimento intelectual e pela autonomia." },
-        HB: { emoji: "🧘", title: "Mestre da Harmonia", description: "O equilíbrio entre vida pessoal e bem-estar é sua maior força." },
-        RS: { emoji: "🤝", title: "Agente de Impacto", description: "Colaborar e ajudar o próximo são essenciais para o seu sucesso." },
-        E: { emoji: "🛡️", title: "Guardião da Estabilidade", description: "Você constrói bases sólidas e valoriza a segurança no futuro." },
-        P: { emoji: "⭐", title: "Protagonista", description: "Ser referência e ter seu trabalho reconhecido são grandes combustíveis." },
+        RP: { emoji: mascot(IndependentSpecialistMascot), title: "Especialista Independente", description: "Você é movido pelo desenvolvimento intelectual e pela autonomia." },
+        HB: { emoji: mascot(IndependentSpecialistMascot), title: "Mestre da Harmonia", description: "O equilíbrio entre vida pessoal e bem-estar é sua maior força." },
+        RS: { emoji: mascot(IndependentSpecialistMascot), title: "Agente de Impacto", description: "Colaborar e ajudar o próximo são essenciais para o seu sucesso." },
+        E: { emoji: mascot(IndependentSpecialistMascot), title: "Guardião da Estabilidade", description: "Você constrói bases sólidas e valoriza a segurança no futuro." },
+        P: { emoji: mascot(IndependentSpecialistMascot), title: "Protagonista", description: "Ser referência e ter seu trabalho reconhecido são grandes combustíveis." },
       };
       const labels = {
         RP: "Realização profissional",
@@ -120,11 +133,11 @@ export function computeResult(trail: Trail, answers: AnswerValue[]): TrailResult
       const scores = Object.fromEntries(keys.map((k, i) => [k, g[i]])) as Record<(typeof keys)[number], number>;
       const top = maxKey(scores);
       const profiles = {
-        autoconhecimento: { emoji: "🦉", title: "Sábio Interior", description: "Você tem clareza sobre suas próprias emoções e limites." },
-        autocontrole: { emoji: "🛡️", title: "Fortaleza Emocional", description: "Você gerencia a pressão e os impulsos com maestria." },
-        automotivacao: { emoji: "🔥", title: "Motor de Iniciativa", description: "Seu otimismo e foco se mantêm diante dos obstáculos." },
-        empatia: { emoji: "❤️", title: "Coração Empático", description: "Você compreende e acolhe as emoções dos outros com sensibilidade." },
-        sociais: { emoji: "🤝", title: "Arquiteto de Conexões", description: "Construir relações positivas e colaborar é a sua maior virtude." },
+        autoconhecimento: { emoji: mascot(BrainMascot), title: "Sábio Interior", description: "Você tem clareza sobre suas próprias emoções e limites." },
+        autocontrole: { emoji: mascot(BrainMascot), title: "Fortaleza Emocional", description: "Você gerencia a pressão e os impulsos com maestria." },
+        automotivacao: { emoji: mascot(BrainMascot), title: "Motor de Iniciativa", description: "Seu otimismo e foco se mantêm diante dos obstáculos." },
+        empatia: { emoji: mascot(BrainMascot), title: "Coração Empático", description: "Você compreende e acolhe as emoções dos outros com sensibilidade." },
+        sociais: { emoji: mascot(BrainMascot), title: "Arquiteto de Conexões", description: "Construir relações positivas e colaborar é a sua maior virtude." },
       };
       const labels = ["Autoconhecimento", "Autocontrole", "Automotivação", "Empatia", "Habilidades sociais"];
       return {
