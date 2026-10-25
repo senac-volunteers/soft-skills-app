@@ -1,5 +1,21 @@
 "use client";
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
+import BrainMascot from "@/components/game/animation/brain-mascot";
+import ConsistencyMascot from "@/components/game/animation/consistency-mascot";
+import TotalEnergyMascot from "@/components/game/animation/energy-mascot";
+import ExplorerMascot from "@/components/game/animation/explorer-mascot";
+import FirstStepMascot from "@/components/game/animation/first-step-mascot";
+import LeaderMascot from "@/components/game/animation/leader-mascot";
+import LightbulbMascot from "@/components/game/animation/lightbulb-mascot";
+import MountainClimberMascot from "@/components/game/animation/motivation-mascot";
 import { AnswerValue, TRAILS, getTrail } from "./trails";
 import { persistLegacyResult } from "./scoring";
 
@@ -24,7 +40,7 @@ export interface GameState {
 
 export interface Badge {
   id: string;
-  emoji: string;
+  emoji: ReactNode;
   title: string;
   description: string;
 }
@@ -32,22 +48,59 @@ export interface Badge {
 export const XP_PER_ANSWER = 10;
 export const XP_TRAIL_BONUS = 50;
 
+const MASCOT_CLASS = "size-full [&_svg]:size-full";
+
 export const BADGES: Badge[] = [
-  { id: "primeiro-passo", emoji: "👣", title: "Primeiro passo", description: "Responda sua primeira pergunta." },
+  {
+    id: "primeiro-passo",
+    emoji: <FirstStepMascot className={MASCOT_CLASS} />,
+    title: "Primeiro passo",
+    description: "Responda sua primeira pergunta.",
+  },
   ...TRAILS.map((t) => ({
     id: `trilha-${t.slug}`,
-    emoji: { "inteligencia-emocional": "🧠", "estilos-de-lideranca": "🧭", "motivacao-no-trabalho": "🔥", "escala-de-criatividade": "🎨" }[t.slug] ?? "🏅",
+    emoji: {
+      "inteligencia-emocional": <BrainMascot className={MASCOT_CLASS} />,
+      "estilos-de-lideranca": <LeaderMascot className={MASCOT_CLASS} />,
+      "motivacao-no-trabalho": (
+        <MountainClimberMascot className={MASCOT_CLASS} />
+      ),
+      "escala-de-criatividade": <LightbulbMascot className={MASCOT_CLASS} />,
+    }[t.slug] ?? <LightbulbMascot className={MASCOT_CLASS} />,
     title: t.title,
     description: `Conclua a trilha de ${t.title}.`,
   })),
-  { id: "explorador", emoji: "🏆", title: "Explorador completo", description: "Conclua todas as trilhas." },
-  { id: "sequencia-3", emoji: "📅", title: "Constância", description: "Pratique 3 dias seguidos." },
-  { id: "xp-300", emoji: "⚡", title: "Energia total", description: "Acumule 300 XP." },
+  {
+    id: "explorador",
+    emoji: <ExplorerMascot className={MASCOT_CLASS} />,
+    title: "Explorador completo",
+    description: "Conclua todas as trilhas.",
+  },
+  {
+    id: "sequencia-3",
+    emoji: <ConsistencyMascot className={MASCOT_CLASS} />,
+    title: "Constância",
+    description: "Pratique 3 dias seguidos.",
+  },
+  {
+    id: "xp-300",
+    emoji: <TotalEnergyMascot className={MASCOT_CLASS} />,
+    title: "Energia total",
+    description: "Acumule 300 XP.",
+  },
 ];
 
 const STORAGE_KEY = "ssa:game:v1";
 
-const INITIAL: GameState = { xp: 0, streak: { count: 0, lastDay: null }, badges: [], voice: false, trails: {}, activeDays: [], daily: { day: null, count: 0 } };
+const INITIAL: GameState = {
+  xp: 0,
+  streak: { count: 0, lastDay: null },
+  badges: [],
+  voice: false,
+  trails: {},
+  activeDays: [],
+  daily: { day: null, count: 0 },
+};
 
 export const DAILY_GOAL = 5;
 
@@ -67,26 +120,41 @@ function yesterday() {
 }
 
 export function emptyProgress(total: number): TrailProgress {
-  return { answers: Array(total).fill(null), current: 0, completed: false, completions: 0 };
+  return {
+    answers: Array(total).fill(null),
+    current: 0,
+    completed: false,
+    completions: 0,
+  };
 }
 
 function withBadges(state: GameState): GameState {
   const earned = new Set(state.badges);
   const progress = Object.values(state.trails);
-  if (progress.some((p) => p.answers.some((a) => a !== null) || p.completions > 0)) earned.add("primeiro-passo");
+  if (
+    progress.some((p) => p.answers.some((a) => a !== null) || p.completions > 0)
+  )
+    earned.add("primeiro-passo");
   TRAILS.forEach((t) => {
-    if ((state.trails[t.slug]?.completions ?? 0) > 0) earned.add(`trilha-${t.slug}`);
+    if ((state.trails[t.slug]?.completions ?? 0) > 0)
+      earned.add(`trilha-${t.slug}`);
   });
-  if (TRAILS.every((t) => (state.trails[t.slug]?.completions ?? 0) > 0)) earned.add("explorador");
+  if (TRAILS.every((t) => (state.trails[t.slug]?.completions ?? 0) > 0))
+    earned.add("explorador");
   if (state.streak.count >= 3) earned.add("sequencia-3");
   if (state.xp >= 300) earned.add("xp-300");
-  return earned.size === state.badges.length ? state : { ...state, badges: Array.from(earned) };
+  return earned.size === state.badges.length
+    ? state
+    : { ...state, badges: Array.from(earned) };
 }
 
 function bumpStreak(streak: GameState["streak"]): GameState["streak"] {
   const t = today();
   if (streak.lastDay === t) return streak;
-  return { count: streak.lastDay === yesterday() ? streak.count + 1 : 1, lastDay: t };
+  return {
+    count: streak.lastDay === yesterday() ? streak.count + 1 : 1,
+    lastDay: t,
+  };
 }
 
 interface GameContextValue {
@@ -94,7 +162,11 @@ interface GameContextValue {
   ready: boolean;
   level: number;
   progressOf: (slug: string) => TrailProgress;
-  answer: (slug: string, index: number, value: AnswerValue) => { xpGained: number; finished: boolean; newBadges: string[] };
+  answer: (
+    slug: string,
+    index: number,
+    value: AnswerValue
+  ) => { xpGained: number; finished: boolean; newBadges: string[] };
   restart: (slug: string) => void;
   toggleVoice: () => void;
   resetAll: () => void;
@@ -131,7 +203,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       const p = state.trails[slug];
       return p && p.answers.length === total ? p : emptyProgress(total);
     },
-    [state.trails],
+    [state.trails]
   );
 
   const answer = useCallback<GameContextValue["answer"]>(
@@ -151,8 +223,13 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         ...state,
         xp: state.xp + xpGained,
         streak: bumpStreak(state.streak),
-        activeDays: state.activeDays.includes(today()) ? state.activeDays : [...state.activeDays, today()].slice(-30),
-        daily: { day: today(), count: (state.daily.day === today() ? state.daily.count : 0) + 1 },
+        activeDays: state.activeDays.includes(today())
+          ? state.activeDays
+          : [...state.activeDays, today()].slice(-30),
+        daily: {
+          day: today(),
+          count: (state.daily.day === today() ? state.daily.count : 0) + 1,
+        },
         trails: {
           ...state.trails,
           [slug]: {
@@ -167,22 +244,36 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       setState(next);
       return { xpGained, finished, newBadges };
     },
-    [state, progressOf],
+    [state, progressOf]
   );
 
   const restart = useCallback((slug: string) => {
     setState((s) => {
       const total = getTrail(slug)?.questions.length ?? 0;
       const prev = s.trails[slug];
-      return { ...s, trails: { ...s.trails, [slug]: { ...emptyProgress(total), completions: prev?.completions ?? 0 } } };
+      return {
+        ...s,
+        trails: {
+          ...s.trails,
+          [slug]: {
+            ...emptyProgress(total),
+            completions: prev?.completions ?? 0,
+          },
+        },
+      };
     });
   }, []);
 
-  const toggleVoice = useCallback(() => setState((s) => ({ ...s, voice: !s.voice })), []);
+  const toggleVoice = useCallback(
+    () => setState((s) => ({ ...s, voice: !s.voice })),
+    []
+  );
   const resetAll = useCallback(() => {
     // Também apaga os resultados guardados no formato antigo, usados pelo relatório completo.
     try {
-      ["lastResults", "lastPoints", "finalFeedback"].forEach((k) => localStorage.removeItem(k));
+      ["lastResults", "lastPoints", "finalFeedback"].forEach((k) =>
+        localStorage.removeItem(k)
+      );
     } catch {
       /* armazenamento indisponível */
     }
@@ -190,8 +281,17 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const value = useMemo(
-    () => ({ state, ready, level: Math.floor(state.xp / 100) + 1, progressOf, answer, restart, toggleVoice, resetAll }),
-    [state, ready, progressOf, answer, restart, toggleVoice, resetAll],
+    () => ({
+      state,
+      ready,
+      level: Math.floor(state.xp / 100) + 1,
+      progressOf,
+      answer,
+      restart,
+      toggleVoice,
+      resetAll,
+    }),
+    [state, ready, progressOf, answer, restart, toggleVoice, resetAll]
   );
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
@@ -204,5 +304,7 @@ export function useGame() {
 }
 
 export function answeredCount(p: TrailProgress) {
-  return p.completed ? p.answers.length : p.answers.filter((a) => a !== null).length;
+  return p.completed
+    ? p.answers.length
+    : p.answers.filter((a) => a !== null).length;
 }

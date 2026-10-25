@@ -58,7 +58,9 @@ export default function AchievementsPage() {
                   earned ? "border-sun bg-orange-50 shadow-[0_4px_0_var(--color-orange-700)]" : "border-rule bg-panel opacity-60 grayscale",
                 )}
               >
-                <span aria-hidden="true">{b.emoji}</span>
+                <span aria-hidden="true" className="grid size-full place-items-center p-1">
+                  {b.emoji}
+                </span>
                 {!earned && <Lock className="absolute -bottom-1 -right-1 size-6 rounded-full bg-canvas p-1 text-soft" />}
               </div>
               <p className={cn("mt-1.5 line-clamp-2 min-h-8 text-xs font-black leading-tight", earned ? "text-ink" : "text-soft")}>{b.title}</p>

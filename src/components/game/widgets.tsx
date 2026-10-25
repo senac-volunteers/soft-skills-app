@@ -126,7 +126,7 @@ export function NextBadge() {
       </div>
       {next ? (
         <div className="mb-4 flex items-center gap-3">
-          <span className="grid size-12 shrink-0 place-items-center rounded-full border-[3px] border-dashed border-rule text-2xl grayscale">
+          <span className="grid size-12 shrink-0 place-items-center rounded-full border-[3px] border-dashed border-rule p-1 text-2xl grayscale">
             {next.emoji}
           </span>
           <div className="min-w-0">
@@ -170,7 +170,9 @@ export function NextBadge() {
                     earned ? "bg-sun-100" : "bg-panel opacity-50 grayscale"
                   )}
                 >
-                  <span aria-hidden="true">{b.emoji}</span>
+                  <span aria-hidden="true" className="grid size-full place-items-center p-0.5">
+                    {b.emoji}
+                  </span>
                   <span className="sr-only">
                     {b.title}: {earned ? "conquistada" : "bloqueada"}
                   </span>
