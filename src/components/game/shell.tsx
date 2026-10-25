@@ -16,7 +16,7 @@ import {
   TrophyNavIcon,
 } from "./icons";
 import { ProgressBar } from "./progress-bar";
-import { CourseCard, DailyGoal, NextBadge, WeekStreak } from "./widgets";
+import { DailyGoal, NextBadge, WeekStreak } from "./widgets";
 
 const NAV = [
   { href: "/", label: "Trilhas", icon: HomeNavIcon },
@@ -330,7 +330,6 @@ function StatsPanel() {
       <DailyGoal />
       <WeekStreak />
       <NextBadge />
-      <CourseCard />
     </aside>
   );
 }
