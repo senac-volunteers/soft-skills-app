@@ -332,7 +332,7 @@ export const TotalEnergyMascot: React.FC<TotalEnergyMascotProps> = memo(
         data-mood={mood}
         {...rest}
       >
-        <style>{ANIMATION_STYLES}</style>
+        <style dangerouslySetInnerHTML={{ __html: ANIMATION_STYLES }} />
 
         <svg
           width={size}

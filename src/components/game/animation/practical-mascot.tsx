@@ -329,7 +329,7 @@ export const PracticalSolverMascot: React.FC<PracticalSolverMascotProps> = memo(
         data-mood={mood}
         {...rest}
       >
-        <style>{ANIMATION_STYLES}</style>
+        <style dangerouslySetInnerHTML={{ __html: ANIMATION_STYLES }} />
 
         <svg
           width={size}

@@ -315,7 +315,7 @@ export const AutonomyMentorMascot: React.FC<AutonomyMentorMascotProps> = memo(
         data-mood={mood}
         {...rest}
       >
-        <style>{ANIMATION_STYLES}</style>
+        <style dangerouslySetInnerHTML={{ __html: ANIMATION_STYLES }} />
 
         <svg
           width={size}

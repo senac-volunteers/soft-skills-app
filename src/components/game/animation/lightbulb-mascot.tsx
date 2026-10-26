@@ -334,7 +334,7 @@ export const LightbulbMascot: React.FC<LightbulbMascotProps> = memo(
         data-mood={mood}
         {...rest}
       >
-        <style>{ANIMATION_STYLES}</style>
+        <style dangerouslySetInnerHTML={{ __html: ANIMATION_STYLES }} />
 
         <svg
           width={size}
